@@ -89,18 +89,18 @@ jobs:
 
       - name: Pull latest image
         run: |
-          docker pull ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+          docker pull ${{ secrets.AWS_ECR_LOGIN_URL }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
 
-     # - name: Stop and remove existing container
-     #   run: |
-     #     docker ps -q --filter "name=studentperformance-app" | grep -q . && docker stop studentperformance-app && docker rm -fv studentperformance-app || true
+      - name: Stop and remove existing container
+        run: |
+          docker ps -aq --filter "name=studentperformance-app" | grep -q . && docker stop studentperformance-app && docker rm -fv studentperformance-app || true
 
       - name: Run Docker Image to serve users
         run: |
           docker run -d \
             -p 5000:5000 \
             --name studentperformance-app \
-            ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+            ${{ secrets.AWS_ECR_LOGIN_URL }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
 
       - name: Clean previous images and containers
         run: |
